@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AnalysisRouteImport } from './routes/analysis'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -17,6 +18,11 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
   path: '/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalysisRoute = AnalysisRouteImport.update({
@@ -38,12 +44,14 @@ const ApiChatRoute = ApiChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analysis': typeof AnalysisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analysis': typeof AnalysisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analysis': typeof AnalysisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analysis' | '/upload' | '/api/chat'
+  fullPaths: '/' | '/analysis' | '/sitemap.xml' | '/upload' | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analysis' | '/upload' | '/api/chat'
-  id: '__root__' | '/' | '/analysis' | '/upload' | '/api/chat'
+  to: '/' | '/analysis' | '/sitemap.xml' | '/upload' | '/api/chat'
+  id: '__root__' | '/' | '/analysis' | '/sitemap.xml' | '/upload' | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalysisRoute: typeof AnalysisRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UploadRoute: typeof UploadRoute
   ApiChatRoute: typeof ApiChatRoute
 }
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/upload'
       fullPath: '/upload'
       preLoaderRoute: typeof UploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analysis': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalysisRoute: AnalysisRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   UploadRoute: UploadRoute,
   ApiChatRoute: ApiChatRoute,
 }
