@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as MobileRouteImport } from './routes/mobile'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as AnalysisRouteImport } from './routes/analysis'
 import { Route as AboutRouteImport } from './routes/about'
@@ -25,6 +27,16 @@ const UploadRoute = UploadRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MobileRoute = MobileRouteImport.update({
+  id: '/mobile',
+  path: '/mobile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeaturesRoute = FeaturesRouteImport.update({
@@ -58,6 +70,8 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/analysis': typeof AnalysisRoute
   '/features': typeof FeaturesRoute
+  '/mobile': typeof MobileRoute
+  '/pricing': typeof PricingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
@@ -67,6 +81,8 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/analysis': typeof AnalysisRoute
   '/features': typeof FeaturesRoute
+  '/mobile': typeof MobileRoute
+  '/pricing': typeof PricingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
@@ -77,6 +93,8 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/analysis': typeof AnalysisRoute
   '/features': typeof FeaturesRoute
+  '/mobile': typeof MobileRoute
+  '/pricing': typeof PricingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/upload': typeof UploadRoute
   '/api/chat': typeof ApiChatRoute
@@ -88,6 +106,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/analysis'
     | '/features'
+    | '/mobile'
+    | '/pricing'
     | '/sitemap.xml'
     | '/upload'
     | '/api/chat'
@@ -97,6 +117,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/analysis'
     | '/features'
+    | '/mobile'
+    | '/pricing'
     | '/sitemap.xml'
     | '/upload'
     | '/api/chat'
@@ -106,6 +128,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/analysis'
     | '/features'
+    | '/mobile'
+    | '/pricing'
     | '/sitemap.xml'
     | '/upload'
     | '/api/chat'
@@ -116,6 +140,8 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AnalysisRoute: typeof AnalysisRoute
   FeaturesRoute: typeof FeaturesRoute
+  MobileRoute: typeof MobileRoute
+  PricingRoute: typeof PricingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UploadRoute: typeof UploadRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -135,6 +161,20 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mobile': {
+      id: '/mobile'
+      path: '/mobile'
+      fullPath: '/mobile'
+      preLoaderRoute: typeof MobileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/features': {
@@ -180,6 +220,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AnalysisRoute: AnalysisRoute,
   FeaturesRoute: FeaturesRoute,
+  MobileRoute: MobileRoute,
+  PricingRoute: PricingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   UploadRoute: UploadRoute,
   ApiChatRoute: ApiChatRoute,
