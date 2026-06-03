@@ -5,13 +5,23 @@ import ReactMarkdown from "react-markdown";
 import { Send, MessageCircle, Loader2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 
-const SUGGESTIONS = [
-  "What should I prioritize first?",
-  "Where am I spending the most?",
-  "How can I improve my runway?",
+const DEFAULT_SUGGESTIONS = [
+  "How do I build a simple budget for my org?",
+  "What financial red flags should I watch for?",
+  "How much runway should we keep in reserve?",
 ];
 
-export function ChatPanel({ context }: { context: string }) {
+export function ChatPanel({
+  context = "",
+  suggestions = DEFAULT_SUGGESTIONS,
+  emptyText = "Ask Fondo anything about your finances — budgeting, runway, fundraising, or what your numbers mean.",
+  className = "",
+}: {
+  context?: string;
+  suggestions?: string[];
+  emptyText?: string;
+  className?: string;
+}) {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -42,21 +52,19 @@ export function ChatPanel({ context }: { context: string }) {
   };
 
   return (
-    <section className="rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]">
+    <section className={`rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ${className}`}>
       <div className="flex items-center gap-2 border-b border-border px-6 py-4">
         <MessageCircle className="h-5 w-5 text-accent" />
-        <h2 className="text-lg font-bold text-card-foreground">Ask Fondo</h2>
-        <span className="text-sm text-muted-foreground">about your finances</span>
+        <h2 className="text-lg font-bold text-card-foreground">Chat with Fondo</h2>
+        <span className="text-sm text-muted-foreground">your AI financial agent</span>
       </div>
 
-      <div ref={scrollRef} className="max-h-[420px] space-y-5 overflow-y-auto px-6 py-6">
+      <div ref={scrollRef} className="max-h-[420px] min-h-[260px] space-y-5 overflow-y-auto px-6 py-6">
         {messages.length === 0 && (
           <div className="text-center">
-            <p className="text-sm text-muted-foreground">
-              Ask anything about your report — Fondo has the full context.
-            </p>
+            <p className="text-sm text-muted-foreground">{emptyText}</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {SUGGESTIONS.map((s) => (
+              {suggestions.map((s) => (
                 <button
                   key={s}
                   onClick={() => submit(s)}
