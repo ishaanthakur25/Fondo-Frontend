@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useRef, useState } from "react";
 import { UploadCloud, FileText, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 import { extractFileText, isSupported } from "@/lib/extract";
 import { analyzeFinances } from "@/lib/analysis.functions";
 import { saveSession } from "@/lib/financial-store";
@@ -159,6 +160,7 @@ function UploadPage() {
           permanently.
         </p>
       </main>
+      <SiteFooter />
     </div>
   );
 }
