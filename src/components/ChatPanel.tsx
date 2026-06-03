@@ -5,13 +5,23 @@ import ReactMarkdown from "react-markdown";
 import { Send, MessageCircle, Loader2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 
-const SUGGESTIONS = [
-  "What should I prioritize first?",
-  "Where am I spending the most?",
-  "How can I improve my runway?",
+const DEFAULT_SUGGESTIONS = [
+  "How do I build a simple budget for my org?",
+  "What financial red flags should I watch for?",
+  "How much runway should we keep in reserve?",
 ];
 
-export function ChatPanel({ context }: { context: string }) {
+export function ChatPanel({
+  context = "",
+  suggestions = DEFAULT_SUGGESTIONS,
+  emptyText = "Ask Fondo anything about your finances — budgeting, runway, fundraising, or what your numbers mean.",
+  className = "",
+}: {
+  context?: string;
+  suggestions?: string[];
+  emptyText?: string;
+  className?: string;
+}) {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
