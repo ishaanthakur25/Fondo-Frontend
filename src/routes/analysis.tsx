@@ -1,9 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { FileText, RefreshCw } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { AnalysisCards } from "@/components/AnalysisCards";
 import { ChatPanel } from "@/components/ChatPanel";
 import { loadSession, clearSession, type FondoSession } from "@/lib/financial-store";
 
