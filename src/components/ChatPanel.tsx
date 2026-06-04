@@ -17,11 +17,6 @@ interface ChatMessage {
   text: string;
 }
 
-function generateSessionId() {
-  return (
-    Math.random().toString(36).substring(2) + Date.now().toString(36)
-  );
-}
 
 export function ChatPanel({
   context = "",
@@ -43,16 +38,10 @@ export function ChatPanel({
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const [sessionId] = useState(() => {
-    if (propSessionId) return propSessionId;
-    if (typeof window === "undefined") return "";
-    const key = "fondo-chat-session-id";
-    const stored = sessionStorage.getItem(key);
-    if (stored) return stored;
-    const newId = generateSessionId();
-    sessionStorage.setItem(key, newId);
-    return newId;
-  });
+  // When a document was uploaded, use its session_id. Otherwise (homepage
+  // chat with no upload) use the "general" session so the backend answers
+  // as a general financial advisor without requiring uploaded data.
+  const sessionId = propSessionId || "general";
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
