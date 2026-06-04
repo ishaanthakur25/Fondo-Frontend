@@ -45,6 +45,7 @@ export function ChatPanel({
 
   const [sessionId] = useState(() => {
     if (propSessionId) return propSessionId;
+    if (typeof window === "undefined") return "";
     const key = "fondo-chat-session-id";
     const stored = sessionStorage.getItem(key);
     if (stored) return stored;

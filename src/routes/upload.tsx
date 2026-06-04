@@ -57,11 +57,10 @@ function UploadPage() {
 
         const data = await res.json();
         const sessionId = String(data.session_id ?? data.sessionId ?? "");
-        const analysis = data.analysis ?? data;
+        const analysis = String(data.analysis ?? "");
 
         saveSession({
           fileName: file.name,
-          content: "",
           analysis,
           sessionId,
         });

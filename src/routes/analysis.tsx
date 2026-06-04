@@ -1,9 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { FileText, RefreshCw } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { AnalysisCards } from "@/components/AnalysisCards";
 import { ChatPanel } from "@/components/ChatPanel";
 import { loadSession, clearSession, type FondoSession } from "@/lib/financial-store";
 
@@ -53,8 +53,7 @@ function AnalysisPage() {
   }
 
   const context =
-    `Financial analysis report:\n${JSON.stringify(session.analysis, null, 2)}\n\n` +
-    `Raw data from file "${session.fileName}":\n${session.content}`;
+    `Financial analysis report for file "${session.fileName}":\n${session.analysis}`;
 
   return (
     <div className="min-h-screen">
@@ -76,8 +75,10 @@ function AnalysisPage() {
           </Link>
         </div>
 
-        <div className="mt-8">
-          <AnalysisCards analysis={session.analysis} />
+        <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] md:p-8">
+          <div className="prose prose-slate max-w-none prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
+            <ReactMarkdown>{session.analysis}</ReactMarkdown>
+          </div>
         </div>
 
         <div className="mt-8">
