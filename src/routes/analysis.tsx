@@ -81,7 +81,7 @@ function AnalysisPage() {
         </div>
 
         <div className="mt-8">
-          <ChatPanel context={context} />
+          <ChatPanel context={context} sessionId={session.sessionId} />
         </div>
       </main>
       <SiteFooter />

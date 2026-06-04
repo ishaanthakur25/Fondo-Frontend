@@ -1,9 +1,9 @@
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Send, MessageCircle, Loader2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
+
+const API_BASE = "https://fondo-production.up.railway.app";
 
 const DEFAULT_SUGGESTIONS = [
   "How do I build a simple budget for my org?",
@@ -11,44 +11,100 @@ const DEFAULT_SUGGESTIONS = [
   "How much runway should we keep in reserve?",
 ];
 
+interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+}
+
+function generateSessionId() {
+  return (
+    Math.random().toString(36).substring(2) + Date.now().toString(36)
+  );
+}
+
 export function ChatPanel({
   context = "",
   suggestions = DEFAULT_SUGGESTIONS,
   emptyText = "Ask Fondo anything about your finances — budgeting, runway, fundraising, or what your numbers mean.",
   className = "",
+  sessionId: propSessionId,
 }: {
   context?: string;
   suggestions?: string[];
   emptyText?: string;
   className?: string;
+  sessionId?: string;
 }) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const transport = useMemo(
-    () => new DefaultChatTransport({ api: "/api/chat", body: { context } }),
-    [context],
-  );
-
-  const { messages, sendMessage, status, error } = useChat({ transport });
-
-  const busy = status === "submitted" || status === "streaming";
+  const [sessionId] = useState(() => {
+    if (propSessionId) return propSessionId;
+    const key = "fondo-chat-session-id";
+    const stored = sessionStorage.getItem(key);
+    if (stored) return stored;
+    const newId = generateSessionId();
+    sessionStorage.setItem(key, newId);
+    return newId;
+  });
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, status]);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages, busy, error]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  const submit = (text: string) => {
+  const submit = async (text: string) => {
     const value = text.trim();
     if (!value || busy) return;
-    sendMessage({ text: value });
+
+    const userMsg: ChatMessage = {
+      id: Date.now().toString(),
+      role: "user",
+      text: value,
+    };
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
-    requestAnimationFrame(() => inputRef.current?.focus());
+    setBusy(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId, question: value }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      const answer =
+        data.answer ?? data.response ?? data.message ?? JSON.stringify(data);
+
+      const assistantMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        text: answer,
+      };
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+    } finally {
+      setBusy(false);
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
   };
 
   return (
@@ -78,14 +134,11 @@ export function ChatPanel({
         )}
 
         {messages.map((m) => {
-          const text = m.parts
-            .map((p) => (p.type === "text" ? p.text : ""))
-            .join("");
           if (m.role === "user") {
             return (
               <div key={m.id} className="flex justify-end">
                 <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground">
-                  {text}
+                  {m.text}
                 </div>
               </div>
             );
@@ -94,13 +147,13 @@ export function ChatPanel({
             <div key={m.id} className="flex gap-3">
               <img src={logo} alt="" width={28} height={28} className="h-7 w-7 shrink-0" />
               <div className="prose prose-sm max-w-none text-sm text-foreground prose-p:my-1.5 prose-li:my-0.5 prose-headings:text-foreground prose-strong:text-foreground">
-                <ReactMarkdown>{text || "…"}</ReactMarkdown>
+                <ReactMarkdown>{m.text || "…"}</ReactMarkdown>
               </div>
             </div>
           );
         })}
 
-        {status === "submitted" && (
+        {busy && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" /> Thinking…
           </div>
@@ -108,7 +161,7 @@ export function ChatPanel({
 
         {error && (
           <p className="text-sm text-destructive">
-            Something went wrong. Please try again.
+            {error}
           </p>
         )}
       </div>

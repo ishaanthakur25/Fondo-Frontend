@@ -1,12 +1,12 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useRef, useState } from "react";
 import { UploadCloud, FileText, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { extractFileText, isSupported } from "@/lib/extract";
-import { analyzeFinances } from "@/lib/analysis.functions";
+import { isSupported } from "@/lib/extract";
 import { saveSession } from "@/lib/financial-store";
+
+const API_BASE = "https://fondo-production.up.railway.app";
 
 export const Route = createFileRoute("/upload")({
   head: () => ({
@@ -23,11 +23,10 @@ export const Route = createFileRoute("/upload")({
 
 function UploadPage() {
   const navigate = useNavigate();
-  const runAnalysis = useServerFn(analyzeFinances);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [dragging, setDragging] = useState(false);
-  const [status, setStatus] = useState<"idle" | "reading" | "analyzing">("idle");
+  const [status, setStatus] = useState<"idle" | "uploading">("idle");
   const [activeFile, setActiveFile] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,25 +41,41 @@ function UploadPage() {
       }
       setActiveFile(file.name);
       try {
-        setStatus("reading");
-        const content = await extractFileText(file);
-        if (!content.trim()) {
-          throw new Error("We couldn't read any text from that file.");
+        setStatus("uploading");
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch(`${API_BASE}/upload`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errText = await res.text().catch(() => "Upload failed");
+          throw new Error(errText);
         }
-        setStatus("analyzing");
-        const analysis = await runAnalysis({ data: { fileName: file.name, content } });
-        saveSession({ fileName: file.name, content, analysis });
+
+        const data = await res.json();
+        const sessionId = String(data.session_id ?? data.sessionId ?? "");
+        const analysis = data.analysis ?? data;
+
+        saveSession({
+          fileName: file.name,
+          content: "",
+          analysis,
+          sessionId,
+        });
         navigate({ to: "/analysis" });
       } catch (e) {
         console.error(e);
         setError(
-          e instanceof Error ? e.message : "Something went wrong analyzing your file.",
+          e instanceof Error ? e.message : "Something went wrong uploading your file.",
         );
         setStatus("idle");
         setActiveFile(null);
       }
     },
-    [navigate, runAnalysis],
+    [navigate],
   );
 
   return (
@@ -140,9 +155,7 @@ function UploadPage() {
                 <FileText className="h-5 w-5" /> {activeFile}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                {status === "reading"
-                  ? "Reading your file…"
-                  : "Fondo is analyzing your finances…"}
+                Uploading and analyzing your file…
               </p>
             </>
           )}

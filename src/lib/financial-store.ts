@@ -6,6 +6,7 @@ export interface FondoSession {
   fileName: string;
   content: string;
   analysis: FinancialAnalysis;
+  sessionId: string;
 }
 
 export function saveSession(session: FondoSession) {
