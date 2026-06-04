@@ -1,11 +1,8 @@
-import type { FinancialAnalysis } from "./analysis.functions";
-
 const KEY = "fondo-session";
 
 export interface FondoSession {
   fileName: string;
-  content: string;
-  analysis: FinancialAnalysis;
+  analysis: string;
   sessionId: string;
 }
 
