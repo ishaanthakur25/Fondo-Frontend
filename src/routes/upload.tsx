@@ -23,11 +23,10 @@ export const Route = createFileRoute("/upload")({
 
 function UploadPage() {
   const navigate = useNavigate();
-  const runAnalysis = useServerFn(analyzeFinances);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [dragging, setDragging] = useState(false);
-  const [status, setStatus] = useState<"idle" | "reading" | "analyzing">("idle");
+  const [status, setStatus] = useState<"idle" | "uploading">("idle");
   const [activeFile, setActiveFile] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,25 +41,41 @@ function UploadPage() {
       }
       setActiveFile(file.name);
       try {
-        setStatus("reading");
-        const content = await extractFileText(file);
-        if (!content.trim()) {
-          throw new Error("We couldn't read any text from that file.");
+        setStatus("uploading");
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch(`${API_BASE}/upload`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errText = await res.text().catch(() => "Upload failed");
+          throw new Error(errText);
         }
-        setStatus("analyzing");
-        const analysis = await runAnalysis({ data: { fileName: file.name, content } });
-        saveSession({ fileName: file.name, content, analysis });
+
+        const data = await res.json();
+        const sessionId = String(data.session_id ?? data.sessionId ?? "");
+        const analysis = data.analysis ?? data;
+
+        saveSession({
+          fileName: file.name,
+          content: "",
+          analysis,
+          sessionId,
+        });
         navigate({ to: "/analysis" });
       } catch (e) {
         console.error(e);
         setError(
-          e instanceof Error ? e.message : "Something went wrong analyzing your file.",
+          e instanceof Error ? e.message : "Something went wrong uploading your file.",
         );
         setStatus("idle");
         setActiveFile(null);
       }
     },
-    [navigate, runAnalysis],
+    [navigate],
   );
 
   return (
