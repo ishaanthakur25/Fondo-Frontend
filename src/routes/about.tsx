@@ -43,7 +43,7 @@ function AboutPage() {
         {/* Founder section */}
         <section className="bg-secondary py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-5">
-            <div className="grid items-center gap-10 md:grid-cols-[auto,1fr] md:gap-14">
+            <div className="grid items-center gap-8 md:grid-cols-[auto,1fr] md:gap-12">
               <div className="flex justify-center md:justify-start">
                 <div className="relative">
                   <div className="absolute -inset-3 rounded-full bg-accent/15 blur-xl" />
@@ -54,35 +54,34 @@ function AboutPage() {
                   />
                 </div>
               </div>
-              <div>
-                <span className="text-sm font-semibold uppercase tracking-wider text-accent">
-                  Meet the founder
-                </span>
-                <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                  Ishaan Thakur
-                </h2>
-                <p className="mt-1 text-base font-medium text-muted-foreground">
-                  Founder of Fondo • Frisco, Texas
-                </p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                  {[
-                    { icon: Lightbulb, t: "The problem", d: "Young leaders manage real money with no financial training or support." },
-                    { icon: Heart, t: "The mission", d: "Make financial clarity free and accessible to the next generation of founders." },
-                    { icon: Users, t: "Built for you", d: "Designed for nonprofit founders, student org leaders, and early-stage teams." },
-                  ].map((c) => (
-                    <div key={c.t} className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                        <c.icon className="h-5 w-5" />
-                      </div>
-                      <h3 className="mt-3 text-base font-bold text-foreground">{c.t}</h3>
-                      <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  { icon: Lightbulb, t: "The problem", d: "Young leaders manage real money with no financial training or support." },
+                  { icon: Heart, t: "The mission", d: "Make financial clarity free and accessible to the next generation of founders." },
+                  { icon: Users, t: "Built for you", d: "Designed for nonprofit founders, student org leaders, and early-stage teams." },
+                ].map((c) => (
+                  <div key={c.t} className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                      <c.icon className="h-5 w-5" />
                     </div>
-                  ))}
-                </div>
+                    <h3 className="mt-3 text-base font-bold text-foreground">{c.t}</h3>
+                    <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="mt-10 space-y-4 text-lg leading-relaxed text-foreground">
+            <div className="mt-12">
+              <span className="text-sm font-semibold uppercase tracking-wider text-accent">
+                Meet the founder
+              </span>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
+                Ishaan Thakur
+              </h2>
+              <p className="mt-1 text-base font-medium text-muted-foreground">
+                Founder of Fondo • Frisco, Texas
+              </p>
+              <div className="mt-6 space-y-4 text-lg leading-relaxed text-foreground">
               <p>
                 Fondo was built by Ishaan Thakur, a teenage founder based in Frisco,
                 Texas. Ishaan co-founded Groundwork, a nonprofit that delivers
@@ -103,6 +102,7 @@ function AboutPage() {
                 If you're building something that matters and figuring out the money
                 part as you go, Fondo was built for you.
               </p>
+              </div>
             </div>
 
             <div className="mt-8">
