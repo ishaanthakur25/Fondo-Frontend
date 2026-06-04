@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Heart, Lightbulb, Users } from "lucide-react";
+import { Heart, Lightbulb, Users, ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import ishaanPhoto from "@/assets/ishaan-thakur.png.asset.json";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
