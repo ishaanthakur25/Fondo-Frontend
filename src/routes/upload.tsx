@@ -155,9 +155,7 @@ function UploadPage() {
                 <FileText className="h-5 w-5" /> {activeFile}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                {status === "reading"
-                  ? "Reading your file…"
-                  : "Fondo is analyzing your finances…"}
+                Uploading and analyzing your file…
               </p>
             </>
           )}
