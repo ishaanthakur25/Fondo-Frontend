@@ -43,8 +43,8 @@ function AboutPage() {
         {/* Founder section */}
         <section className="bg-secondary py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-5">
-            <div className="grid items-center gap-8 md:grid-cols-[auto,1fr] md:gap-12">
-              <div className="flex justify-center md:justify-start">
+            <div className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-[280px_repeat(3,minmax(0,1fr))]">
+              <div className="flex justify-center md:justify-start lg:items-center">
                 <div className="relative">
                   <div className="absolute -inset-3 rounded-full bg-accent/15 blur-xl" />
                   <img
@@ -54,21 +54,19 @@ function AboutPage() {
                   />
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-3">
-                {[
-                  { icon: Lightbulb, t: "The problem", d: "Young leaders manage real money with no financial training or support." },
-                  { icon: Heart, t: "The mission", d: "Make financial clarity free and accessible to the next generation of founders." },
-                  { icon: Users, t: "Built for you", d: "Designed for nonprofit founders, student org leaders, and early-stage teams." },
-                ].map((c) => (
-                  <div key={c.t} className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                      <c.icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-3 text-base font-bold text-foreground">{c.t}</h3>
-                    <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
+              {[
+                { icon: Lightbulb, t: "The problem", d: "Young leaders manage real money with no financial training or support." },
+                { icon: Heart, t: "The mission", d: "Make financial clarity free and accessible to the next generation of founders." },
+                { icon: Users, t: "Built for you", d: "Designed for nonprofit founders, student org leaders, and early-stage teams." },
+              ].map((c) => (
+                <div key={c.t} className="flex h-full flex-col justify-center rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                    <c.icon className="h-5 w-5" />
                   </div>
-                ))}
-              </div>
+                  <h3 className="mt-3 text-base font-bold text-foreground">{c.t}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{c.d}</p>
+                </div>
+              ))}
             </div>
 
             <div className="mt-12">
