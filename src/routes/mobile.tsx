@@ -66,7 +66,7 @@ function MobilePage() {
               />
               <button
                 type="submit"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 text-base font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-accent px-6 text-base font-semibold leading-tight text-accent-foreground transition-transform hover:-translate-y-0.5"
               >
                 <Bell className="h-5 w-5" /> Get early access
               </button>
