@@ -78,6 +78,8 @@ export function ChatPanel({
     setInput("");
     setBusy(true);
     setError(null);
+    if (persistUserId) void saveChatMessage(persistUserId, "user", value);
+
 
     try {
       const res = await fetch(`${API_BASE}/ask`, {
