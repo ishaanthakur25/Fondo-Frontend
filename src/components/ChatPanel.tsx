@@ -102,6 +102,7 @@ export function ChatPanel({
         text: answer,
       };
       setMessages((prev) => [...prev, assistantMsg]);
+      if (persistUserId) void saveChatMessage(persistUserId, "assistant", answer);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
     } finally {
