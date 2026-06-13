@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Send, MessageCircle, Loader2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
+import { loadChatHistory, saveChatMessage } from "@/lib/chat-history";
 
 const API_BASE = "https://fondo-production.up.railway.app";
 
@@ -24,12 +25,14 @@ export function ChatPanel({
   emptyText = "Ask Fondo anything about your finances — budgeting, runway, fundraising, or what your numbers mean.",
   className = "",
   sessionId: propSessionId,
+  persistUserId,
 }: {
   context?: string;
   suggestions?: string[];
   emptyText?: string;
   className?: string;
   sessionId?: string;
+  persistUserId?: string;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -42,6 +45,14 @@ export function ChatPanel({
   // chat with no upload) use the "general" session so the backend answers
   // as a general financial advisor without requiring uploaded data.
   const sessionId = propSessionId || "general";
+
+  // Load persisted chat history for logged-in users.
+  useEffect(() => {
+    if (!persistUserId) return;
+    loadChatHistory().then((history) => {
+      if (history.length) setMessages(history);
+    });
+  }, [persistUserId]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -67,6 +78,8 @@ export function ChatPanel({
     setInput("");
     setBusy(true);
     setError(null);
+    if (persistUserId) void saveChatMessage(persistUserId, "user", value);
+
 
     try {
       const res = await fetch(`${API_BASE}/ask`, {
@@ -89,6 +102,7 @@ export function ChatPanel({
         text: answer,
       };
       setMessages((prev) => [...prev, assistantMsg]);
+      if (persistUserId) void saveChatMessage(persistUserId, "assistant", answer);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
     } finally {

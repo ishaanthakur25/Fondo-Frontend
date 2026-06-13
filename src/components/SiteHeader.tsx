@@ -1,7 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
+import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
   { to: "/features", label: "Features" },
@@ -13,6 +14,15 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { user, loading, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    setOpen(false);
+    navigate({ to: "/" });
+  };
+
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/85 backdrop-blur-md">
@@ -44,13 +54,31 @@ export function SiteHeader() {
           >
             Upload
           </Link>
-          <Link
-            to="/"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
-          >
-            Chat with Fondo
-          </Link>
+          {!loading && user ? (
+            <>
+              <Link
+                to="/app"
+                className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
+              >
+                My workspace
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" /> Log out
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
+            >
+              Log in
+            </Link>
+          )}
         </div>
+
 
         <button
           className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-foreground md:hidden"
@@ -81,6 +109,32 @@ export function SiteHeader() {
             >
               Upload a Document
             </Link>
+            {!loading && user ? (
+              <>
+                <Link
+                  to="/app"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg bg-accent px-3 py-2.5 text-center text-sm font-semibold text-accent-foreground"
+                >
+                  My workspace
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="rounded-lg border border-border px-3 py-2.5 text-center text-sm font-semibold text-foreground"
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="rounded-lg bg-accent px-3 py-2.5 text-center text-sm font-semibold text-accent-foreground"
+              >
+                Log in
+              </Link>
+            )}
+
           </nav>
         </div>
       )}
