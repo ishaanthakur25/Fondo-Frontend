@@ -5,6 +5,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { isSupported } from "@/lib/extract";
 import { saveSession } from "@/lib/financial-store";
+import { useAuth } from "@/lib/auth-context";
+import { saveAnalysis } from "@/lib/chat-history";
 
 const API_BASE = "https://fondo-production.up.railway.app";
 
