@@ -25,12 +25,14 @@ export function ChatPanel({
   emptyText = "Ask Fondo anything about your finances — budgeting, runway, fundraising, or what your numbers mean.",
   className = "",
   sessionId: propSessionId,
+  persistUserId,
 }: {
   context?: string;
   suggestions?: string[];
   emptyText?: string;
   className?: string;
   sessionId?: string;
+  persistUserId?: string;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -43,6 +45,14 @@ export function ChatPanel({
   // chat with no upload) use the "general" session so the backend answers
   // as a general financial advisor without requiring uploaded data.
   const sessionId = propSessionId || "general";
+
+  // Load persisted chat history for logged-in users.
+  useEffect(() => {
+    if (!persistUserId) return;
+    loadChatHistory().then((history) => {
+      if (history.length) setMessages(history);
+    });
+  }, [persistUserId]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
