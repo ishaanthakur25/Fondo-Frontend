@@ -67,6 +67,7 @@ function UploadPage() {
           analysis,
           sessionId,
         });
+        if (user) await saveAnalysis(user.id, file.name, analysis, sessionId);
         navigate({ to: "/analysis" });
       } catch (e) {
         console.error(e);
