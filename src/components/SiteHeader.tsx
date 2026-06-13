@@ -1,7 +1,8 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
+import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
   { to: "/features", label: "Features" },
