@@ -109,6 +109,32 @@ export function SiteHeader() {
             >
               Upload a Document
             </Link>
+            {!loading && user ? (
+              <>
+                <Link
+                  to="/app"
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg bg-accent px-3 py-2.5 text-center text-sm font-semibold text-accent-foreground"
+                >
+                  My workspace
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="rounded-lg border border-border px-3 py-2.5 text-center text-sm font-semibold text-foreground"
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="rounded-lg bg-accent px-3 py-2.5 text-center text-sm font-semibold text-accent-foreground"
+              >
+                Log in
+              </Link>
+            )}
+
           </nav>
         </div>
       )}
