@@ -25,6 +25,7 @@ export const Route = createFileRoute("/upload")({
 
 function UploadPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [dragging, setDragging] = useState(false);
