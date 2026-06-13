@@ -54,13 +54,31 @@ export function SiteHeader() {
           >
             Upload
           </Link>
-          <Link
-            to="/"
-            className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
-          >
-            Chat with Fondo
-          </Link>
+          {!loading && user ? (
+            <>
+              <Link
+                to="/app"
+                className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
+              >
+                My workspace
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" /> Log out
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="inline-flex h-10 items-center justify-center rounded-lg bg-accent px-5 text-sm font-semibold text-accent-foreground transition-colors hover:brightness-105"
+            >
+              Log in
+            </Link>
+          )}
         </div>
+
 
         <button
           className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-foreground md:hidden"
