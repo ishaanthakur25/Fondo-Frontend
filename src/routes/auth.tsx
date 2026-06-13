@@ -36,7 +36,7 @@ function AuthPage() {
     }
   }, [loading, user, navigate]);
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (busy) return;
     setError(null);
