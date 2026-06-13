@@ -78,7 +78,7 @@ function UploadPage() {
         setActiveFile(null);
       }
     },
-    [navigate],
+    [navigate, user],
   );
 
   return (
