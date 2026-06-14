@@ -5,6 +5,9 @@ import { FileText, RefreshCw } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
+import { HealthScorePanel } from "@/components/HealthScorePanel";
+import { ScenariosPanel } from "@/components/ScenariosPanel";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loadSession, clearSession, type FondoSession } from "@/lib/financial-store";
 
 export const Route = createFileRoute("/analysis")({
