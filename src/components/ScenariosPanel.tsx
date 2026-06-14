@@ -27,26 +27,92 @@ function asList(v: unknown): string[] {
   return [];
 }
 
-function parseScenario(raw: any, scenario: string): ScenarioResult {
-  return {
-    scenario,
-    currentState: String(
-      raw.current_state ?? raw.currentState ?? raw.current ?? raw.before ?? "",
-    ),
-    projectedImpact: String(
-      raw.projected_impact ??
-        raw.projectedImpact ??
-        raw.impact ??
-        raw.after ??
-        raw.projection ??
-        "",
-    ),
-    opportunities: asList(raw.opportunities ?? raw.upsides ?? raw.benefits),
-    risks: asList(raw.risks ?? raw.downsides ?? raw.warnings),
-    recommendation: String(
-      raw.recommendation ?? raw.advice ?? raw.summary ?? raw.suggestion ?? "",
-    ),
-  };
+function parseScenario(raw: any, scenarioText: string): ScenarioResult {
+  mt-3 text-sm font-semibold text-primary">
+            <span className="text-muted-foreground">What if </span>
+            {r.scenario}
+          </p>
+
+          {/* Before / after */}
+          {(r.currentState || r.projectedImpact) && (
+            <div className="mt-5 grid items-stretch gap-4 sm:grid-cols-[1fr_auto_1fr]">
+              <div className="rounded-xl border border-border bg-secondary/40 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Current state
+                </p>
+                <p className="mt-2 text-sm text-foreground">{r.currentState || "—"}</p>
+              </div>
+              <div className="hidden items-center justify-center sm:flex">
+                <ArrowRight className="h-5 w-5 text-accent" />
+              </div>
+              <div className="rounded-xl border border-accent/40 bg-accent/10 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                  Projected impact
+                </p>
+                <p className="mt-2 text-sm text-foreground">{r.projectedImpact || "—"}</p>
+              </div>
+            </div>
+          )}
+
+          {/* New position */}
+          {r.newPosition && (
+            <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                New position
+              </p>
+              <p className="mt-2 text-sm text-foreground">{r.newPosition}</p>
+            </div>
+          )}
+
+          {/* Opportunities + risks */}
+          {(r.opportunities.length > 0 || r.risks.length > 0) && (
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {r.opportunities.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Opportunities
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {r.opportunities.map((o, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-foreground">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                        <span>{o}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {r.risks.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    Risks
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {r.risks.map((rk, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-foreground">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                        <span>{rk}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Recommendation */}
+          {r.recommendation && (
+            <div className="mt-5 rounded-xl border border-accent/40 bg-accent/10 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Recommendation
+              </p>
+              <p className="mt-2 text-sm font-medium text-foreground">{r.recommendation}</p>
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+  );
 }
 
 export function ScenariosPanel({ sessionId }: { sessionId: string }) {
