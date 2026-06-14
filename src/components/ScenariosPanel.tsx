@@ -15,6 +15,7 @@ interface ScenarioResult {
   scenario: string;
   currentState: string;
   projectedImpact: string;
+  newPosition: string;
   opportunities: string[];
   risks: string[];
   recommendation: string;
@@ -26,9 +27,9 @@ function asList(v: unknown): string[] {
   return [];
 }
 
-function parseScenario(raw: any, scenario: string): ScenarioResult {
+function parseScenario(raw: any, scenarioText: string): ScenarioResult {
   return {
-    scenario,
+    scenario: String(raw.scenario ?? scenarioText),
     currentState: String(
       raw.current_state ?? raw.currentState ?? raw.current ?? raw.before ?? "",
     ),
@@ -39,6 +40,9 @@ function parseScenario(raw: any, scenario: string): ScenarioResult {
         raw.after ??
         raw.projection ??
         "",
+    ),
+    newPosition: String(
+      raw.new_position ?? raw.newPosition ?? raw.position ?? "",
     ),
     opportunities: asList(raw.opportunities ?? raw.upsides ?? raw.benefits),
     risks: asList(raw.risks ?? raw.downsides ?? raw.warnings),
@@ -67,7 +71,8 @@ export function ScenariosPanel({ sessionId }: { sessionId: string }) {
       });
       if (!res.ok) throw new Error(await res.text().catch(() => "Request failed"));
       const json = await res.json();
-      setResults((prev) => [parseScenario(json, text), ...prev]);
+      const raw = json.scenario_result ?? json;
+      setResults((prev) => [parseScenario(raw, text), ...prev]);
       setQuestion("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not run scenario.");
@@ -148,6 +153,16 @@ export function ScenariosPanel({ sessionId }: { sessionId: string }) {
                 </p>
                 <p className="mt-2 text-sm text-foreground">{r.projectedImpact || "—"}</p>
               </div>
+            </div>
+          )}
+
+          {/* New position */}
+          {r.newPosition && (
+            <div className="mt-5 rounded-xl border border-border bg-secondary/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                New position
+              </p>
+              <p className="mt-2 text-sm text-foreground">{r.newPosition}</p>
             </div>
           )}
 
