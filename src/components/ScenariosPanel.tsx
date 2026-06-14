@@ -15,6 +15,7 @@ interface ScenarioResult {
   scenario: string;
   currentState: string;
   projectedImpact: string;
+  newPosition: string;
   opportunities: string[];
   risks: string[];
   recommendation: string;
