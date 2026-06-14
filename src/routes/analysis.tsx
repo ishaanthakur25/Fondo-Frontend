@@ -78,11 +78,35 @@ function AnalysisPage() {
           </Link>
         </div>
 
-        <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] md:p-8">
-          <div className="prose prose-slate max-w-none prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
-            <ReactMarkdown>{session.analysis}</ReactMarkdown>
-          </div>
-        </div>
+        <Tabs defaultValue="overview" className="mt-8">
+          <TabsList className="h-11 w-full justify-start gap-1 sm:w-auto">
+            <TabsTrigger value="overview" className="px-4">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="health" className="px-4">
+              Health Score
+            </TabsTrigger>
+            <TabsTrigger value="scenarios" className="px-4">
+              Scenarios
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="mt-6">
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] md:p-8">
+              <div className="prose prose-slate max-w-none prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
+                <ReactMarkdown>{session.analysis}</ReactMarkdown>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="health" className="mt-6">
+            <HealthScorePanel sessionId={session.sessionId} />
+          </TabsContent>
+
+          <TabsContent value="scenarios" className="mt-6">
+            <ScenariosPanel sessionId={session.sessionId} />
+          </TabsContent>
+        </Tabs>
 
         <div className="mt-8">
           <ChatPanel context={context} sessionId={session.sessionId} />
