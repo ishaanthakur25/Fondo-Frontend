@@ -13,7 +13,7 @@ import { loadSession, clearSession, type FondoSession } from "@/lib/financial-st
 export const Route = createFileRoute("/analysis")({
   head: () => ({
     meta: [
-      { title: "Your financial report — Fondo" },
+      { title: "Your Financial Report — Fondo" },
       {
         name: "description",
         content: "AI-generated financial insights, action items, and red flags from your file.",
@@ -64,7 +64,7 @@ function AnalysisPage() {
       <main className="mx-auto max-w-4xl px-5 py-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-foreground">Your financial report</h1>
+            <h1 className="text-3xl font-extrabold text-foreground">Your Financial Report</h1>
             <p className="mt-1.5 flex items-center gap-2 text-sm text-muted-foreground">
               <FileText className="h-4 w-4" /> {session.fileName}
             </p>
