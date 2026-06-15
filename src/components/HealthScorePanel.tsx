@@ -57,13 +57,13 @@ function parseHealthScore(raw: any): HealthScoreData {
   let dimensions: Dimension[] = [];
   if (Array.isArray(rawDims)) {
     dimensions = rawDims.map((d: any) => ({
-      name: String(d.name ?? d.dimension ?? d.label ?? d.title ?? ""),
+      name: titleCase(String(d.name ?? d.dimension ?? d.label ?? d.title ?? "")),
       score: asNumber(d.score ?? d.value ?? 0),
       insight: String(d.insight ?? d.description ?? d.detail ?? d.comment ?? ""),
     }));
   } else if (rawDims && typeof rawDims === "object") {
     dimensions = Object.entries(rawDims).map(([name, d]: [string, any]) => ({
-      name,
+      name: titleCase(name),
       score: asNumber(typeof d === "object" ? d.score ?? d.value : d),
       insight:
         typeof d === "object" ? String(d.insight ?? d.description ?? "") : "",
