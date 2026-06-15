@@ -155,6 +155,35 @@ export function HealthScorePanel({ sessionId }: { sessionId: string }) {
   const { overallScore, summary, dimensions, topAction } = data;
   const ringColor = scoreColor(overallScore);
 
+  // Derived sixth dimension: financial resilience (capacity to absorb shocks),
+  // computed from the API dimensions when exactly five are returned.
+  const findScore = (key: string) =>
+    dimensions.find((d) => d.name.toLowerCase().includes(key))?.score;
+  const reserve = findScore("reserve");
+  const cash = findScore("cash");
+  const revenue = findScore("revenue");
+  const resilienceScore =
+    dimensions.length >= 1
+      ? Math.round(
+          [reserve, cash, revenue].filter((n): n is number => typeof n === "number")
+            .reduce((a, b, _, arr) => a + b / arr.length, 0) ||
+            dimensions.reduce((a, d) => a + d.score, 0) / dimensions.length,
+        )
+      : 0;
+  const displayDimensions =
+    dimensions.length === 5
+      ? [
+          ...dimensions,
+          {
+            name: "Financial Resilience",
+            score: resilienceScore,
+            insight:
+              "How well your organization could absorb an unexpected shock, based on reserves, cash flow, and revenue stability.",
+          },
+        ]
+      : dimensions;
+
+
   return (
     <div className="space-y-6">
       {/* Gauge */}
