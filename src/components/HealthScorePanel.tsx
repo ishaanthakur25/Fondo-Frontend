@@ -220,9 +220,9 @@ export function HealthScorePanel({ sessionId }: { sessionId: string }) {
       </section>
 
       {/* Dimension cards */}
-      {dimensions.length > 0 && (
+      {displayDimensions.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {dimensions.map((d, i) => (
+          {displayDimensions.map((d, i) => (
             <div
               key={i}
               className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-card)]"
