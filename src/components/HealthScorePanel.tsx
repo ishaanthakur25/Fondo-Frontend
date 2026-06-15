@@ -16,6 +16,16 @@ interface HealthScoreData {
   topAction: string;
 }
 
+function titleCase(s: string): string {
+  return s
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .map((w) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w))
+    .join(" ");
+}
+
 function asNumber(v: unknown): number {
   const n = typeof v === "string" ? parseFloat(v) : (v as number);
   return Number.isFinite(n) ? Math.round(n) : 0;
