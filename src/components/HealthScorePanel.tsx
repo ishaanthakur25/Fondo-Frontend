@@ -165,6 +165,19 @@ export function HealthScorePanel({ sessionId }: { sessionId: string }) {
         <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Overall Health Score
         </p>
+        <p className="mt-4 max-w-2xl text-center leading-relaxed text-foreground/90">
+          {buildScoreDescription(data)
+            .split(/(\*\*[^*]+\*\*)/g)
+            .map((part, i) =>
+              part.startsWith("**") && part.endsWith("**") ? (
+                <strong key={i} className="font-bold text-foreground">
+                  {part.slice(2, -2)}
+                </strong>
+              ) : (
+                <span key={i}>{part}</span>
+              ),
+            )}
+        </p>
       </section>
 
       {/* Dimension cards */}
