@@ -22,22 +22,28 @@ function asNumber(v: unknown): number {
 }
 
 function parseHealthScore(raw: any): HealthScoreData {
+  const hs =
+    raw.health_score && typeof raw.health_score === "object"
+      ? raw.health_score
+      : raw;
+
   const overallScore = asNumber(
-    raw.overall_score ?? raw.overallScore ?? raw.score ?? raw.health_score ?? 0,
+    hs.overall_score ?? hs.overallScore ?? hs.score ?? 0,
   );
   const summary = String(
-    raw.summary ?? raw.overview ?? raw.health_summary ?? raw.analysis ?? "",
+    hs.summary ?? hs.overview ?? hs.health_summary ?? hs.analysis ?? "",
   );
   const topAction = String(
-    raw.top_priority_action ??
-      raw.top_action ??
-      raw.priority_action ??
-      raw.topAction ??
-      raw.recommendation ??
+    hs.top_priority ??
+      hs.top_priority_action ??
+      hs.top_action ??
+      hs.priority_action ??
+      hs.topAction ??
+      hs.recommendation ??
       "",
   );
 
-  const rawDims = raw.dimensions ?? raw.scores ?? raw.categories ?? [];
+  const rawDims = hs.dimensions ?? hs.scores ?? hs.categories ?? [];
   let dimensions: Dimension[] = [];
   if (Array.isArray(rawDims)) {
     dimensions = rawDims.map((d: any) => ({
@@ -55,6 +61,23 @@ function parseHealthScore(raw: any): HealthScoreData {
   }
 
   return { overallScore, summary, dimensions, topAction };
+}
+
+function buildScoreDescription(data: HealthScoreData): string {
+  if (!data.dimensions.length) return data.summary;
+
+  const sorted = [...data.dimensions].sort((a, b) => b.score - a.score);
+  const highest = sorted[0];
+  const lowest = sorted[sorted.length - 1];
+
+  const sentences: string[] = [
+    `Your Fondo Health Score of **${data.overallScore}** reflects ${highest.name} as your strongest area and ${lowest.name} as your biggest opportunity for improvement.`,
+  ];
+
+  if (data.summary) sentences.push(data.summary);
+  sentences.push("Focus on your top priority below to raise your score.");
+
+  return sentences.join(" ");
 }
 
 function scoreColor(score: number) {
