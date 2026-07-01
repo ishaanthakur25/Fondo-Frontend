@@ -4,7 +4,7 @@ import { Send, MessageCircle, Loader2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 import { loadChatHistory, saveChatMessage } from "@/lib/chat-history";
 
-const API_BASE = "https://fondo-production.up.railway.app";
+const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
 const DEFAULT_SUGGESTIONS = [
   "How do I build a simple budget for my org?",

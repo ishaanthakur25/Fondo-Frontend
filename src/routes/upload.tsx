@@ -8,7 +8,7 @@ import { saveSession } from "@/lib/financial-store";
 import { useAuth } from "@/lib/auth-context";
 import { saveAnalysis } from "@/lib/chat-history";
 
-const API_BASE = "https://fondo-production.up.railway.app";
+const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
 export const Route = createFileRoute("/upload")({
   head: () => ({

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, AlertCircle, Target } from "lucide-react";
 
-const API_BASE = "https://fondo-production.up.railway.app";
+const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
 interface Dimension {
   name: string;

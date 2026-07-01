@@ -9,7 +9,7 @@ import {
   Wand2,
 } from "lucide-react";
 
-const API_BASE = "https://fondo-production.up.railway.app";
+const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
 interface ScenarioResult {
   scenario: string;
