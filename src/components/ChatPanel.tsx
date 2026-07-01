@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Send, MessageCircle, Loader2 } from "lucide-react";
+import { Send, MessageCircle, Loader2, Maximize2, Minimize2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 import { loadChatHistory, saveChatMessage } from "@/lib/chat-history";
 
@@ -38,6 +38,7 @@ export function ChatPanel({
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -111,15 +112,29 @@ export function ChatPanel({
     }
   };
 
-  return (
-    <section className={`rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ${className}`}>
+  const panel = (
+    <section
+      className={`flex flex-col rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ${className} ${isFullscreen ? "h-full" : ""}`}
+    >
       <div className="flex items-center gap-2 border-b border-border px-6 py-4">
         <MessageCircle className="h-5 w-5 text-accent" />
         <h2 className="text-lg font-bold text-card-foreground">Chat with Fondo</h2>
         <span className="text-sm text-muted-foreground">your AI financial agent</span>
+        <button
+          type="button"
+          onClick={() => setIsFullscreen((v) => !v)}
+          className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+        </button>
       </div>
 
-      <div ref={scrollRef} className="max-h-[420px] min-h-[260px] space-y-5 overflow-y-auto px-6 py-6">
+      <div
+        ref={scrollRef}
+        className={`space-y-5 overflow-y-auto px-6 py-6 ${isFullscreen ? "min-h-0 flex-1" : "max-h-[420px] min-h-[260px]"}`}
+      >
         {messages.length === 0 && (
           <div className="text-center">
             <p className="text-sm text-muted-foreground">{emptyText}</p>
@@ -201,5 +216,13 @@ export function ChatPanel({
         </button>
       </form>
     </section>
+  );
+
+  return isFullscreen ? (
+    <div className="fixed inset-0 z-50 flex flex-col bg-background p-4 sm:p-6">
+      {panel}
+    </div>
+  ) : (
+    panel
   );
 }
