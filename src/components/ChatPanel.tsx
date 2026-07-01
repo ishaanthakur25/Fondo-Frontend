@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Send, MessageCircle, Loader2 } from "lucide-react";
+import { Send, MessageCircle, Loader2, Maximize2, Minimize2 } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 import { loadChatHistory, saveChatMessage } from "@/lib/chat-history";
 
