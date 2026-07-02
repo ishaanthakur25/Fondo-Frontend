@@ -59,7 +59,7 @@ export async function saveAnalysis(
 export async function loadAnalyses(): Promise<StoredAnalysis[]> {
   const { data, error } = await supabase
     .from("document_analyses")
-    .select("id, file_name, analysis, session_id, created_at")
+    .select("id, filename, analysis, session_id, created_at")
     .order("created_at", { ascending: false });
   if (error) {
     console.error("loadAnalyses", error);
