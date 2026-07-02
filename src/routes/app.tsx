@@ -88,22 +88,29 @@ function AppPage() {
             ) : (
               <ul className="mt-4 space-y-3">
                 {analyses.map((a) => (
-                  <li
-                    key={a.id}
-                    className="rounded-xl border border-border bg-background p-4"
-                  >
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4 shrink-0 text-accent" />
-                      <span className="truncate text-sm font-semibold text-foreground">
-                        {a.file_name}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {new Date(a.created_at).toLocaleDateString()}
-                    </p>
-                    <p className="mt-2 line-clamp-4 text-xs text-muted-foreground">
-                      {a.analysis}
-                    </p>
+                  <li key={a.id}>
+                    <button
+                      type="button"
+                      onClick={() => setActiveSession(a.session_id || null)}
+                      className={`w-full rounded-xl border bg-background p-4 text-left transition-colors hover:border-accent/60 ${
+                        activeSession && activeSession === a.session_id
+                          ? "border-accent"
+                          : "border-border"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 shrink-0 text-accent" />
+                        <span className="truncate text-sm font-semibold text-foreground">
+                          {a.file_name}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {new Date(a.created_at).toLocaleDateString()}
+                      </p>
+                      <p className="mt-2 line-clamp-4 text-xs text-muted-foreground">
+                        {a.analysis}
+                      </p>
+                    </button>
                   </li>
                 ))}
               </ul>
