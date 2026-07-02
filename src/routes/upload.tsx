@@ -7,6 +7,7 @@ import { isSupported } from "@/lib/extract";
 import { saveSession } from "@/lib/financial-store";
 import { useAuth } from "@/lib/auth-context";
 import { saveAnalysis } from "@/lib/chat-history";
+import { supabase } from "@/integrations/supabase/client";
 
 const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
