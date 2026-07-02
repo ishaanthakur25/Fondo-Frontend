@@ -20,6 +20,7 @@ function AppPage() {
   const { user, loading } = useAuth();
   const [analyses, setAnalyses] = useState<StoredAnalysis[]>([]);
   const [loadingAnalyses, setLoadingAnalyses] = useState(true);
+  const [activeSession, setActiveSession] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
