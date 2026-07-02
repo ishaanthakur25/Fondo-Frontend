@@ -8,7 +8,7 @@ export interface StoredChatMessage {
 
 export interface StoredAnalysis {
   id: string;
-  file_name: string;
+  filename: string;
   analysis: string;
   session_id: string;
   created_at: string;
