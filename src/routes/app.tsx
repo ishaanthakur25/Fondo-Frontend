@@ -64,7 +64,16 @@ function AppPage() {
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
-          <ChatPanel persistUserId={user.id} />
+          <ChatPanel
+            key={activeSession ?? "general"}
+            persistUserId={user.id}
+            sessionId={activeSession ?? undefined}
+            emptyText={
+              activeSession
+                ? "Ask Fondo anything about this document — trends, risks, or what the numbers mean."
+                : undefined
+            }
+          />
 
           <aside className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
             <h2 className="text-lg font-bold text-card-foreground">Saved analyses</h2>
