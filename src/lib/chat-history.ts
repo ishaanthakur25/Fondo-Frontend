@@ -8,7 +8,7 @@ export interface StoredChatMessage {
 
 export interface StoredAnalysis {
   id: string;
-  file_name: string;
+  filename: string;
   analysis: string;
   session_id: string;
   created_at: string;
@@ -49,7 +49,7 @@ export async function saveAnalysis(
 ) {
   const { error } = await supabase.from("document_analyses").insert({
     user_id: userId,
-    file_name: fileName,
+    filename: fileName,
     analysis,
     session_id: sessionId,
   });
@@ -59,7 +59,7 @@ export async function saveAnalysis(
 export async function loadAnalyses(): Promise<StoredAnalysis[]> {
   const { data, error } = await supabase
     .from("document_analyses")
-    .select("id, file_name, analysis, session_id, created_at")
+    .select("id, filename, analysis, session_id, created_at")
     .order("created_at", { ascending: false });
   if (error) {
     console.error("loadAnalyses", error);

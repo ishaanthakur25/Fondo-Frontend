@@ -101,7 +101,7 @@ function AppPage() {
                       <div className="flex items-center gap-2">
                         <FileText className="h-4 w-4 shrink-0 text-accent" />
                         <span className="truncate text-sm font-semibold text-foreground">
-                          {a.file_name}
+                          {a.filename}
                         </span>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
