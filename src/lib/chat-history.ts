@@ -49,7 +49,7 @@ export async function saveAnalysis(
 ) {
   const { error } = await supabase.from("document_analyses").insert({
     user_id: userId,
-    file_name: fileName,
+    filename: fileName,
     analysis,
     session_id: sessionId,
   });
