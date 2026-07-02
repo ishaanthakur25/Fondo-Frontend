@@ -68,7 +68,13 @@ function UploadPage() {
           analysis,
           sessionId,
         });
-        if (user) await saveAnalysis(user.id, file.name, analysis, sessionId);
+        // Re-fetch the current user directly so a stale/late-restored
+        // auth context doesn't cause the analysis to be dropped.
+        const { data: authData } = await supabase.auth.getUser();
+        const currentUser = authData.user ?? user;
+        if (currentUser) {
+          await saveAnalysis(currentUser.id, file.name, analysis, sessionId);
+        }
         navigate({ to: "/analysis" });
       } catch (e) {
         console.error(e);
