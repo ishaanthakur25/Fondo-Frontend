@@ -98,7 +98,24 @@ function AppPage() {
           />
 
           <aside className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
-            <h2 className="text-lg font-bold text-card-foreground">Saved analyses</h2>
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-lg font-bold text-card-foreground">Saved analyses</h2>
+              {analyses.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  disabled={clearing}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-destructive/60 hover:text-destructive disabled:opacity-60"
+                >
+                  {clearing ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-3.5 w-3.5" />
+                  )}
+                  Clear
+                </button>
+              )}
+            </div>
             {loadingAnalyses ? (
               <div className="mt-6 flex justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-accent" />
@@ -108,23 +125,32 @@ function AppPage() {
                 No analyses yet. Upload a financial document to get started.
               </p>
             ) : (
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 max-h-[520px] space-y-3 overflow-y-auto pr-1">
                 {analyses.map((a) => (
                   <li key={a.id}>
-                    <button
-                      type="button"
-                      onClick={() => setActiveSession(a.session_id || null)}
-                      className={`w-full rounded-xl border bg-background p-4 text-left transition-colors hover:border-accent/60 ${
+                    <div
+                      className={`w-full rounded-xl border bg-background p-4 transition-colors ${
                         activeSession && activeSession === a.session_id
                           ? "border-accent"
                           : "border-border"
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 shrink-0 text-accent" />
-                        <span className="truncate text-sm font-semibold text-foreground">
+                        <button
+                          type="button"
+                          onClick={() => openReport(a)}
+                          aria-label="Open financial report"
+                          className="shrink-0 text-accent transition-colors hover:text-accent/70"
+                        >
+                          <FileText className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSession(a.session_id || null)}
+                          className="truncate text-left text-sm font-semibold text-foreground hover:underline"
+                        >
                           {a.filename}
-                        </span>
+                        </button>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
                         {new Date(a.created_at).toLocaleDateString()}
@@ -132,12 +158,20 @@ function AppPage() {
                       <p className="mt-2 line-clamp-4 text-xs text-muted-foreground">
                         {a.analysis}
                       </p>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => openReport(a)}
+                        className="mt-3 text-xs font-semibold text-accent hover:underline"
+                      >
+                        View financial report →
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
             )}
           </aside>
+
         </div>
       </main>
       <SiteFooter />
