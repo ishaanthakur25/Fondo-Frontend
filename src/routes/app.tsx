@@ -23,6 +23,26 @@ function AppPage() {
   const [analyses, setAnalyses] = useState<StoredAnalysis[]>([]);
   const [loadingAnalyses, setLoadingAnalyses] = useState(true);
   const [activeSession, setActiveSession] = useState<string | null>(null);
+  const [clearing, setClearing] = useState(false);
+
+  function openReport(a: StoredAnalysis) {
+    saveSession({
+      fileName: a.filename,
+      analysis: a.analysis,
+      sessionId: a.session_id,
+    });
+    navigate({ to: "/analysis" });
+  }
+
+  async function handleClear() {
+    if (!user) return;
+    if (!window.confirm("Clear all saved analyses? This cannot be undone.")) return;
+    setClearing(true);
+    await clearAnalyses(user.id);
+    setAnalyses([]);
+    setClearing(false);
+  }
+
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
