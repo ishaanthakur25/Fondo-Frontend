@@ -1,11 +1,13 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { FileText, Loader2, Upload } from "lucide-react";
+import { FileText, Loader2, Upload, Trash2 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
 import { useAuth } from "@/lib/auth-context";
-import { loadAnalyses, type StoredAnalysis } from "@/lib/chat-history";
+import { loadAnalyses, clearAnalyses, type StoredAnalysis } from "@/lib/chat-history";
+import { saveSession } from "@/lib/financial-store";
+
 
 export const Route = createFileRoute("/app")({
   ssr: false,
