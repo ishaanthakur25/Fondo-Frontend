@@ -67,3 +67,12 @@ export async function loadAnalyses(): Promise<StoredAnalysis[]> {
   }
   return data ?? [];
 }
+
+export async function clearAnalyses(userId: string) {
+  const { error } = await supabase
+    .from("document_analyses")
+    .delete()
+    .eq("user_id", userId);
+  if (error) console.error("clearAnalyses", error);
+}
+
