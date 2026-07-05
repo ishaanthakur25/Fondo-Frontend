@@ -138,7 +138,7 @@ export function HealthScorePanel({ sessionId }: { sessionId: string }) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-16 text-center">
         <Loader2 className="h-8 w-8 animate-spin text-accent" />
-        <p className="text-sm text-muted-foreground">Calculating your health score…</p>
+        <p className="text-sm text-muted-foreground">Fondo is thinking… if this takes too long please try again.</p>
       </div>
     );
   }
