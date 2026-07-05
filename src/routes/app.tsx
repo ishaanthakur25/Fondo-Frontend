@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
 import { loadAnalyses, clearAnalyses, type StoredAnalysis } from "@/lib/chat-history";
 import { saveSession } from "@/lib/financial-store";
 
@@ -45,7 +46,10 @@ function AppPage() {
 
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
+    if (!loading && !user) {
+      toast.error("Please log in to access your workspace.");
+      navigate({ to: "/auth" });
+    }
   }, [loading, user, navigate]);
 
   useEffect(() => {
