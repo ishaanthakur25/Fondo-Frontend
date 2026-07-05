@@ -39,6 +39,8 @@ export function ChatPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const isTall = isFullscreen || className.includes("h-full");
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -114,7 +116,7 @@ export function ChatPanel({
 
   const panel = (
     <section
-      className={`flex flex-col rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ${className} ${isFullscreen ? "h-full" : ""}`}
+      className={`flex flex-col rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] ${className} ${isTall ? "h-full" : ""}`}
     >
       <div className="flex items-center gap-2 border-b border-border px-6 py-4">
         <MessageCircle className="h-5 w-5 text-accent" />
@@ -133,7 +135,7 @@ export function ChatPanel({
 
       <div
         ref={scrollRef}
-        className={`space-y-5 overflow-y-auto px-6 py-6 ${isFullscreen ? "min-h-0 flex-1" : "max-h-[420px] min-h-[260px]"}`}
+        className={`space-y-5 overflow-y-auto px-6 py-6 ${isTall ? "min-h-0 flex-1" : "max-h-[420px] min-h-[260px]"}`}
       >
         {messages.length === 0 && (
           <div className="text-center">
