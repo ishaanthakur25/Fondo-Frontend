@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
 import { loadAnalyses, clearAnalyses, type StoredAnalysis } from "@/lib/chat-history";
 import { saveSession } from "@/lib/financial-store";
 
