@@ -75,7 +75,7 @@ export function ScenariosPanel({ sessionId }: { sessionId: string }) {
       setResults((prev) => [parseScenario(raw, text), ...prev]);
       setQuestion("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not run scenario.");
+      setError("Scenario modeling failed. Please try again.");
     } finally {
       setLoading(false);
     }
