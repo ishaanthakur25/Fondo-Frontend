@@ -74,13 +74,20 @@ function UploadPage() {
         const { data: authData } = await supabase.auth.getUser();
         const currentUser = authData.user ?? user;
         if (currentUser) {
-          await saveAnalysis(currentUser.id, file.name, analysis, sessionId);
+          try {
+            await saveAnalysis(currentUser.id, file.name, analysis, sessionId);
+          } catch (saveErr) {
+            console.error(saveErr);
+            toast.error(
+              "Analysis complete but couldn't save to your history. Please check your connection.",
+            );
+          }
         }
         navigate({ to: "/analysis" });
       } catch (e) {
         console.error(e);
         setError(
-          e instanceof Error ? e.message : "Something went wrong uploading your file.",
+          "Something went wrong with your upload. Please try a PDF, CSV, or Excel file and try again.",
         );
         setStatus("idle");
         setActiveFile(null);
