@@ -8,6 +8,7 @@ import { saveSession } from "@/lib/financial-store";
 import { useAuth } from "@/lib/auth-context";
 import { saveAnalysis } from "@/lib/chat-history";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const API_BASE = "https://fondo-backend-kfic.onrender.com";
 
