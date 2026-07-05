@@ -123,7 +123,7 @@ export function HealthScorePanel({ sessionId }: { sessionId: string }) {
         if (!cancelled) setData(parseHealthScore(json));
       } catch (e) {
         if (!cancelled)
-          setError(e instanceof Error ? e.message : "Could not load health score.");
+          setError("Health Score unavailable right now. Please try again in a moment.");
       } finally {
         if (!cancelled) setLoading(false);
       }
