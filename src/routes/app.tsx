@@ -89,7 +89,7 @@ function AppPage() {
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-stretch">
           <ChatPanel
             key={activeSession ?? "general"}
             persistUserId={user.id}
@@ -99,9 +99,10 @@ function AppPage() {
                 ? "Ask Fondo anything about this document — trends, risks, or what the numbers mean."
                 : undefined
             }
+            className="h-full"
           />
 
-          <aside className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+          <aside className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] lg:h-[600px]">
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-lg font-bold text-card-foreground">Saved analyses</h2>
               {analyses.length > 0 && (
@@ -129,7 +130,7 @@ function AppPage() {
                 No analyses yet. Upload a financial document to get started.
               </p>
             ) : (
-              <ul className="mt-4 max-h-[520px] space-y-3 overflow-y-auto pr-1">
+              <ul className="mt-4 flex-1 space-y-3 overflow-y-auto pr-1">
                 {analyses.map((a) => (
                   <li key={a.id}>
                     <div
