@@ -46,7 +46,10 @@ function AppPage() {
 
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
+    if (!loading && !user) {
+      toast.error("Please log in to access your workspace.");
+      navigate({ to: "/auth" });
+    }
   }, [loading, user, navigate]);
 
   useEffect(() => {
