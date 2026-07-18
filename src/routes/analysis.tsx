@@ -57,8 +57,8 @@ function AnalysisPage() {
     );
   }
 
-  const context =
-    `Financial analysis report for file "${session.fileName}":\n${session.analysis}`;
+  const cleanAnalysis = session.analysis.split(/financial data:/i)[0].trim();
+  const context = `Financial analysis report for file "${session.fileName}":\n${cleanAnalysis}`;
 
   return (
     <div className="min-h-screen">
