@@ -96,7 +96,7 @@ function AnalysisPage() {
           <TabsContent value="overview" className="mt-6">
             <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] md:p-8">
               <div className="prose prose-slate max-w-none prose-headings:text-foreground prose-p:text-foreground prose-li:text-foreground prose-strong:text-foreground">
-                <ReactMarkdown>{session.analysis}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{cleanAnalysis}</ReactMarkdown>
               </div>
             </div>
           </TabsContent>
