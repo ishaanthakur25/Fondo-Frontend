@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 import logo from "@/assets/fondo-logo.png";
 import { useAuth } from "@/lib/auth-context";
+import { InstallAppButton } from "@/components/PwaInstall";
 
 const NAV = [
   { to: "/features", label: "Features" },
@@ -48,6 +49,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <InstallAppButton />
           <Link
             to="/upload"
             className="inline-flex h-10 items-center justify-center rounded-lg border border-primary/20 px-4 text-sm font-semibold text-primary transition-colors hover:bg-secondary"
