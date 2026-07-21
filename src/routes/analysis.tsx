@@ -17,6 +17,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
 import { HealthScorePanel } from "@/components/HealthScorePanel";
 import { ScenariosPanel } from "@/components/ScenariosPanel";
+import { ActionPlanPanel } from "@/components/ActionPlanPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { isSupported } from "@/lib/extract";
 import {
@@ -155,6 +156,9 @@ function AnalysisPage() {
             <TabsTrigger value="scenarios" className="px-4">
               Scenarios
             </TabsTrigger>
+            <TabsTrigger value="action-plan" className="px-4">
+              Action Plan
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">
@@ -181,6 +185,13 @@ function AnalysisPage() {
 
           <TabsContent value="scenarios" className="mt-6">
             <ScenariosPanel
+              key={session.sessionId}
+              sessionId={session.sessionId}
+            />
+          </TabsContent>
+
+          <TabsContent value="action-plan" className="mt-6">
+            <ActionPlanPanel
               key={session.sessionId}
               sessionId={session.sessionId}
             />
