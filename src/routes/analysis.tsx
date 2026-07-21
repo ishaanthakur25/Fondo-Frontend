@@ -17,6 +17,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ChatPanel } from "@/components/ChatPanel";
 import { HealthScorePanel } from "@/components/HealthScorePanel";
 import { ScenariosPanel } from "@/components/ScenariosPanel";
+import { ActionPlanPanel } from "@/components/ActionPlanPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { isSupported } from "@/lib/extract";
 import {
