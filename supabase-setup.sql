@@ -51,3 +51,22 @@ create policy "Users manage their own analyses"
 
 create index if not exists document_analyses_user_id_created_at_idx
   on public.document_analyses (user_id, created_at);
+
+-- =========================================================
+-- Waitlist (mobile app early access)
+-- =========================================================
+create table if not exists public.waitlist (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  created_at timestamptz not null default now()
+);
+
+grant insert on public.waitlist to anon, authenticated;
+grant all on public.waitlist to service_role;
+
+alter table public.waitlist enable row level security;
+
+create policy "Anyone can join the waitlist"
+  on public.waitlist for insert
+  to anon, authenticated
+  with check (true);
