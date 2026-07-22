@@ -65,7 +65,8 @@ export function ChatPanel({
   }, [messages, busy, error]);
 
   useEffect(() => {
-    inputRef.current?.focus();
+    // Focus without scrolling the page so chat sections don't pull the viewport down on load.
+    inputRef.current?.focus({ preventScroll: true });
   }, []);
 
   const submit = async (text: string) => {
