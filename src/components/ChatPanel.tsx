@@ -111,7 +111,7 @@ export function ChatPanel({
       setError("Fondo couldn't process that. Please try rephrasing your question.");
     } finally {
       setBusy(false);
-      requestAnimationFrame(() => inputRef.current?.focus());
+      requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
     }
   };
 
