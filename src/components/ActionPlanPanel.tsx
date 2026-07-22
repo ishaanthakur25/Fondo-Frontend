@@ -37,12 +37,30 @@ function parseAction(raw: any): Action {
 
 function parsePlan(raw: any): ActionPlan {
   const root = raw?.action_plan ?? raw?.actionPlan ?? raw ?? {};
-  const weeksRaw = asList(root.weeks ?? root.plan ?? []);
+
+  // Backend may return numbered week keys (week_1, week_2, week_3, week_4)
+  const numberedWeeks: Week[] = [1, 2, 3, 4]
+    .map((n) => {
+      const w = root[`week_${n}`];
+      if (!w || typeof w !== "object") return null;
+      return {
+        week: n,
+        theme: String(w?.theme ?? ""),
+        actions: asList(w?.actions ?? []).map(parseAction),
+      };
+    })
+    .filter((w): w is Week => w !== null && w.actions.length > 0);
+
+  const weeksRaw = numberedWeeks.length
+    ? numberedWeeks
+    : asList(root.weeks ?? root.plan ?? []);
+
   const weeks: Week[] = weeksRaw.map((w: any, i: number) => ({
     week: Number(w?.week ?? i + 1),
     theme: String(w?.theme ?? w?.title ?? ""),
     actions: asList(w?.actions ?? w?.items ?? []).map(parseAction),
   }));
+
   return {
     summary: String(root.summary ?? root.overview ?? ""),
     weeks,
